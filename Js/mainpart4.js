@@ -36,39 +36,39 @@ class Ball {
   }
 
   update() {
-    if ((this.x + this.size) >= width) {
-      this.velX = -(this.velX);
+    if (this.x + this.size >= width) {
+      this.velX = -Math.abs(this.velX);
     }
-  
-    if ((this.x - this.size) <= 0) {
-      this.velX = -(this.velX);
+
+    if (this.x - this.size <= 0) {
+      this.velX = Math.abs(this.velX);
     }
-  
-    if ((this.y + this.size) >= height) {
-      this.velY = -(this.velY);
+
+    if (this.y + this.size >= height) {
+      this.velY = -Math.abs(this.velY);
     }
-  
-    if ((this.y - this.size) <= 0) {
-      this.velY = -(this.velY);
+
+    if (this.y - this.size <= 0) {
+      this.velY = Math.abs(this.velY);
     }
-  
+
     this.x += this.velX;
     this.y += this.velY;
   }
 
   collisionDetect() {
     for (const ball of balls) {
-      if (this !== ball) {
+      if (!(this === ball)) {
         const dx = this.x - ball.x;
         const dy = this.y - ball.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-  
+
         if (distance < this.size + ball.size) {
           ball.color = this.color = randomRGB();
         }
       }
     }
-  }  
+  }
 }
 
 const balls = [];
@@ -83,26 +83,23 @@ while (balls.length < 25) {
     random(-7, 7),
     random(-7, 7),
     randomRGB(),
-    size,
+    size
   );
 
   balls.push(ball);
 }
 
 function loop() {
-    ctx.fillStyle = "rgb(0 0 0 / 25%)";
-    ctx.fillRect(0, 0, width, height);
-  
-    for (const ball of balls) {
-      ball.draw();
-      ball.update();
-      ball.collisionDetect();
-    }
-  
-    requestAnimationFrame(loop);
+  ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+  ctx.fillRect(0, 0, width, height);
+
+  for (const ball of balls) {
+    ball.draw();
+    ball.update();
+    ball.collisionDetect();
   }
-  
 
-  loop();
+  requestAnimationFrame(loop);
+}
 
-  
+loop();
